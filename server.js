@@ -39,6 +39,13 @@ app.post("/todos",(req,res)=>{
     }
 })
 
+app.delete("/todos/:id",(req,res)=>{
+    console.log(typeof parseInt(req.params.id))
+    let deleted = _.findWhere(todos, {id:parseInt(req.params.id)})
+    todos = _.without(todos, deleted)
+    res.json(deleted)
+})
+
 app.listen(PORT,()=>{
     console.log("listening on port "+ PORT);
 })
