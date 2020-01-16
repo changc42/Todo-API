@@ -20,6 +20,17 @@ app.get("/todos",(req,res)=>{
     res.json(todos)
 })
 
+app.get("/todos/:id",(req,res)=>{
+    let matchedTodo;
+    todos.forEach(e=>{
+        if(e.id==req.params.id) matchedTodo = e;
+    })
+    if(matchedTodo){
+        res.json(matchedTodo);
+    }
+    else res.status(404).send()
+})
+
 app.listen(PORT,()=>{
     console.log("listening on port "+ PORT);
 })
