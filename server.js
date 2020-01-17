@@ -15,11 +15,15 @@ app.get("/",(req,res)=>{
 })
 
 app.get("/todos",(req,res)=>{
+    let filteredTasks = {...todos}
     if(req.query.hasOwnProperty("completed")){
         let isCompleted = req.query.completed=='true'?true:false
-        res.json(_.where(todos,{completed: isCompleted}))
+        filteredTasks = _.where(filteredTasks,{completed: isCompleted})
     }
-    res.json(todos)
+    if(req.query.hasOwnProperty("description")){
+        filteredTasks = _.filter(filteredTasks,e=>e.description.indexOf(req.query.description)>=0)
+    }
+    res.json(filteredTasks)
 })
 
 app.get("/todos/:id",(req,res)=>{
