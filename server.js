@@ -46,6 +46,16 @@ app.delete("/todos/:id",(req,res)=>{
     res.json(deleted)
 })
 
+app.put("/todos/:id",(req,res)=>{
+    let matchedTodo = _.findWhere(todos,{id:parseInt(req.params.id)})
+    let deleted = {...matchedTodo}
+    if(matchedTodo){
+        _.extend(matchedTodo,req.body)
+        res.send(JSON.stringify(deleted) + "\nchanged to \n" + JSON.stringify(matchedTodo))
+    }
+    else res.send("specified id does not exist")
+})
+
 app.listen(PORT,()=>{
     console.log("listening on port "+ PORT);
 })
