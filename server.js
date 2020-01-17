@@ -15,6 +15,10 @@ app.get("/",(req,res)=>{
 })
 
 app.get("/todos",(req,res)=>{
+    if(req.query.hasOwnProperty("completed")){
+        let isCompleted = req.query.completed=='true'?true:false
+        res.json(_.where(todos,{completed: isCompleted}))
+    }
     res.json(todos)
 })
 
@@ -27,14 +31,14 @@ app.get("/todos/:id",(req,res)=>{
 })
 
 app.post("/todos",(req,res)=>{
-    let body = req.body;
+    let body = _.pick(req.body,'description','completed');
     
-    if(!_.isString(body.description) || body.description.trim().length===0){
+    if(!_.isString(body.description) || body.description.trim().length===0 || !_.isBoolean(body.completed)){
         res.status(400).send()
     }
     else{
         body.id = todoNextId++;
-        todos.push(_.pick(body,'description', 'id'))
+        todos.push(body)
         res.json(todos)
     }
 })
